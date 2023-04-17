@@ -1,0 +1,12 @@
+body {
+  background-color: bisque;
+  height: 100vh;
+  
+}
+
+h1 {
+  text-align: center;
+  color: rgb(24, 206, 24);
+  font-family: 'cursive';
+  font-size: 36px;
+}
