@@ -1,13 +1,23 @@
-import Headline from './components/Headers/Headline'
-import './App.css'
+import Welcome from './components/welcome/welcome'
+import Login from './components/login/Login'
 
+
+import { ThemeProvider } from '@emotion/react'
+import { CssBaseline } from '@mui/material'
+
+//Theme
+import customTheme from './customTheme/customTheme'
 function App() {
 
 
   return (
-    <div className="App">
-      <Headline text="Hallo Welt"/>
-    </div>
+    <ThemeProvider theme={customTheme}>
+      <CssBaseline>
+
+        <Welcome/>
+        {/* <Login/> */}
+      </CssBaseline>
+    </ThemeProvider>
   )
 }
 
