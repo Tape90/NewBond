@@ -1,12 +1,14 @@
-export default function Headline({text}) {
+import customTheme from '../../customTheme/customTheme'
+
+export default function Headline({weight}) {
     return(
     <>
         <h1 style={{
             textAlign:"center",
-            color: "green",
+            color: "text.secondary",
             fontFamily: "cursive",
-            fontSize: "36px"
-        }}>{text}</h1>
+            fontSize: weight
+        }}>Newbond</h1>
     </>
     );
 }
