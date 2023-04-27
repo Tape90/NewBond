@@ -1,10 +1,11 @@
 import { Box } from "@mui/material";
-import FormHelperText from '@mui/material/FormHelperText';
 import TextField from '@mui/material/TextField';
 import {Button} from "@mui/material";
-
+import { useState } from "react";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 export default function TextfieldLogin() {
+    const [fieldType,setFieldType] = useState(true);
     return(
         <Box
         component="form"
@@ -27,6 +28,7 @@ export default function TextfieldLogin() {
       
             }}
                 required
+                type="email"
                 id="outlined-required"
                 label="💌Email"
                 defaultValue="email"
@@ -41,13 +43,14 @@ export default function TextfieldLogin() {
                     
                 }}
                 required
+                //make typed password hidden
+                type={fieldType ? "password" : "text"}
                 id="outlined-required"
                 label="🔑password"
-                defaultValue="******"
-                hidden
+                defaultValue="password"
                 name = "password"
                     // inputRef={valueEmail}
-            />
+            /><VisibilityIcon onClick={(e) => setFieldType(!fieldType)}/>
             <Box sx={{
                 width: "30%",
                 display: "flex",

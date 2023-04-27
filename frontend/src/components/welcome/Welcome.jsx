@@ -1,8 +1,8 @@
 import customTheme from "../../customTheme/customTheme";
 import Headline from "../Headers/Headline";
 import { Box, ThemeProvider } from "@mui/material";
-import WelcomePicture from "../pictures/WelcomePicture";
-import SubmitButton from "../buttons/SubmitButton";
+import WelcomePicture from "../Pictures/WelcomePicture";
+import SubmitButton from "../Buttons/SubmitButton";
 
 export default function Welcome(){
     return(

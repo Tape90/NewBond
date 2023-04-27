@@ -1,5 +1,5 @@
-import Welcome from './components/welcome/welcome'
-import Login from './components/login/Login'
+import Welcome from './components/Welcome/welcome'
+import Login from './components/Login/Login'
 
 
 import { ThemeProvider } from '@emotion/react'
@@ -7,6 +7,9 @@ import { CssBaseline } from '@mui/material'
 
 //Theme
 import customTheme from './customTheme/customTheme'
+import Feed from './components/feed/Feed'
+
+
 function App() {
 
 
@@ -14,8 +17,9 @@ function App() {
     <ThemeProvider theme={customTheme}>
       <CssBaseline>
 
-        <Welcome/>
+        {/* <Welcome/>  */}
         {/* <Login/> */}
+        <Feed/>
       </CssBaseline>
     </ThemeProvider>
   )

@@ -1,6 +1,6 @@
 import customTheme from '../../customTheme/customTheme'
 
-export default function Headline({weight}) {
+export default function Headline({weight,text}) {
     return(
     <>
         <h1 style={{
@@ -8,7 +8,7 @@ export default function Headline({weight}) {
             color: "text.secondary",
             fontFamily: "cursive",
             fontSize: weight
-        }}>Newbond</h1>
+        }}>{text ? text : "Newbond"}</h1>
     </>
     );
 }
