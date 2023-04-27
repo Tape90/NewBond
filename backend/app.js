@@ -55,7 +55,7 @@ app.get("/",(req,res) => {
 })
 
 app.post("/api/posts", upload.single("image"), async (req, res) => {
-    console.log(req.body)
+    console.log(req);
     const { id, title, location, instagramLink, price,heart } = req.body;
     const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
     const post = new Post({id, title, location, instagramLink, price, imageUrl,heart });
@@ -67,11 +67,6 @@ app.post("/api/posts", upload.single("image"), async (req, res) => {
       res.sendStatus(500);
     }
 });
-
-app.listen(PORT, () => {
-    console.log(`Running on Port ${PORT}`);
-})
-
 app.get("/api/posts", async (req, res) => {
     try {
       const posts = await Post.find();
@@ -81,3 +76,8 @@ app.get("/api/posts", async (req, res) => {
       res.sendStatus(500);
     }
 });
+
+app.listen(PORT, () => {
+    console.log(`Running on Port ${PORT}`);
+})
+
