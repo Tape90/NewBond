@@ -5,7 +5,14 @@ import QuoteCard from "../Cards/QuoteCard";
 import SubmitButton from "../Buttons/SubmitButton";
 import SmallHelperText from "../Texts/SmallHelperText";
 import {GoogleButton, AppleButton} from "../Buttons/SsoButtons";
+import { useRef } from "react";
 export default function Login() {
+    const valueEmail = useRef();
+    const valuePassword = useRef();
+    const handleClick = () => {
+        console.log(valueEmail.current.value);
+        console.log(valuePassword.current.value);
+    }
     return(
         <Box sx={{
             width: "100vw",
@@ -28,7 +35,7 @@ export default function Login() {
             
             // border: "2px solid green"
         }}>
-            <TextfieldLogin/>
+            <TextfieldLogin valueEmail={valueEmail} valuePassword={valuePassword}/>
         </Box>
         <Box sx={{
             width: "100%",
@@ -51,7 +58,7 @@ export default function Login() {
             rowGap: "10%",
             // border: "2px solid blue"
         }}>
-            <SubmitButton text={"Login"} heightVal={"20%"}/>
+            <SubmitButton onHandleClick={handleClick} text={"Login"} heightVal={"20%"}/>
             <SmallHelperText text={"or continue with"}/>
             <Box 
             sx={{

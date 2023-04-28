@@ -1,10 +1,10 @@
 import { Box } from "@mui/material";
 import TextField from '@mui/material/TextField';
 import {Button} from "@mui/material";
-import { useState } from "react";
+import { useState, } from "react";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
-export default function TextfieldLogin() {
+export default function TextfieldLogin({valueEmail,valuePassword}) {
     const [fieldType,setFieldType] = useState(true);
     return(
         <Box
@@ -21,7 +21,7 @@ export default function TextfieldLogin() {
         >
 
             <TextField
-            
+            inputRef={valueEmail}
             sx={{
                 width: "30%",
                 marginBottom: "10%",
@@ -37,6 +37,7 @@ export default function TextfieldLogin() {
                 />
             
             <TextField
+                inputRef={valuePassword}
                 sx={{
                     width: "30%",
                   

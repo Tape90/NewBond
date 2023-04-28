@@ -16,59 +16,32 @@ export default function Feed() {
         setOpen(!open)
     }
     const [expand,setExpand] = useState(true);
-    const [posts,setPosts] = useState([])
-        // [{
-        //     id: uuidv4(),
-        //     title: "Post 1",
-        //     pictureUrl: "../../../img/test.png",
-        //     place: "Bremenstr.12, 28203 Bremen",
-        //     instaLink: "https://www.instagram.com/hebammenverband_bremen/",
-        //     cost: "0€",
-        //     heart: 0
-        // },
-        // {
-        //     id: uuidv4(),
-        //     title: "Post 2",
-        //     pictureUrl: "../../../img/test.png",
-        //     place: "Bremenstr.12, 28203 Bremen",
-        //     instaLink: "https://www.instagram.com/hebammenverband_bremen/",
-        //     cost: "0€",
-        //     heart: 0
-        // },
-        // {
-        //     id: uuidv4(),
-        //     title: "Post 3",
-        //     pictureUrl: "../../../img/test.png",
-        //     place: "Bremenstr.12, 28203 Bremen",
-        //     instaLink: "https://www.instagram.com/hebammenverband_bremen/",
-        //     cost: "0€",
-        //     heart: 0
-        // }]
-
-        const getPostFromBackend = async () => {
-            try {
-              const response = await axios("http://localhost:3001/api/posts");
-              console.log(response.data)
-              const newPosts = response.data.map((post) => {
-                return {
-                  id: post.id,
-                  title: post.title,
-                  pictureUrl: post.imageUrl,
-                  place: post.location,
-                  instaLink: post.instagramLink,
-                  cost: post.price,
-                  heart: post.heart,
-                };
-              });
-              setPosts(newPosts);
-            } catch (error) {
-              console.log(error);
-            }
-          };
-          
-          useEffect(() => {
-            getPostFromBackend();
-          }, []);
+    const [posts,setPosts] = useState([]);
+    const getPostFromBackend = async () => {
+        try {
+          const response = await axios("http://localhost:3001/api/posts");
+          console.log(response.data)
+          const newPosts = response.data.map((post) => {
+            return {
+              id: post.id,
+              title: post.title,
+              pictureUrl: post.imageUrl,
+              place: post.location,
+              instaLink: post.instagramLink,
+              cost: post.price,
+              heart: post.heart,
+            };
+          });
+          console.log(newPosts);
+          setPosts(newPosts);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      
+      useEffect(() => {
+        getPostFromBackend();
+      }, []);
 
     return(
         <>
