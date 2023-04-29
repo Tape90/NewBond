@@ -16,7 +16,7 @@ function App() {
   return (
     <ThemeProvider theme={customTheme}>
       <CssBaseline>
-        {/* <Register/> */}
+        <Register/>
         {/* <Welcome/>  */}
         {/* <Login/> */}
         {/* <Feed/> */}

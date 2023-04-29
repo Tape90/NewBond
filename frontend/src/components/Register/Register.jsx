@@ -3,14 +3,56 @@ import { useState,useRef } from 'react';
 import { TextField } from '@mui/material';
 import { Button } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
+import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import showNotification from '../notification/showNotification';
+
 export default function Register() {
     const [equal,setEqual] = useState(false);
     const formRef = useRef();
+    const registerUser = async(e) => {
+        e.preventDefault();
+        const form = formRef.current;
+        const data = {
+            fullname: form.fullname.value,
+            email: form.email.value,
+            password: form.password.value,
+            id: uuidv4(),
+            role: "student",
+        };
+
+        // for (var pair of formData.entries()) {
+        //     console.log(pair[0]+ ', ' + pair[1]); 
+        // }
+
+        const config = {
+            url: "http://localhost:3001/api/register",
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            data: JSON.stringify(data),
+          };
+        
+        try {
+            const response = await axios(config);
+            console.log(response);
+            showNotification(`Notification: ${response.data.message}`,'normal');
+            if (response.status !== 200 && response.status !== 201) {
+                throw new Error("Failed to register user");
+            }
+        } catch (error) {
+            showNotification(`Notification: ${error.response.data.message}`,'red');
+            console.log(error)
+        }
+    }
     const checkPassword = () => { 
         console.log(formRef.current);  
         const form = formRef.current;
         form.password.value === form.confirmPassword.value ? setEqual(true) : setEqual(false);
     }
+    //send post request to backend to register user with the following data: fullname, email, password. Create also a id with uuidv4 and a role with 'student'
+
     return (
         <>
             <Box sx={{
@@ -37,8 +79,10 @@ export default function Register() {
                 </Box>
                 {/* //Here comes the box component for the form */}
                 <Box
-                component='form'     
-                ref={formRef}    
+                component='form'
+                     
+                ref={formRef}
+                onSubmit={(e) => {registerUser(e)}}    
                 sx={{
                     height: '100%',
                     width: '100%',
@@ -65,11 +109,6 @@ export default function Register() {
                             style: { color: 'black' },
                         }}
                         label="email" name="email" variant="standard" />
-                        <TextField required id="outlined-basic" 
-                        InputLabelProps={{
-                            style: { color: 'black' },
-                        }}                        
-                        label="username" name="username" variant="standard" />
                         <TextField required id="outlined-basic" 
                         InputLabelProps={{
                             style: { color: 'black' },
