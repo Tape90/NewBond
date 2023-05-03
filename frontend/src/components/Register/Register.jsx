@@ -38,9 +38,15 @@ export default function Register() {
             if(response.status !== 201) {
                 throw new Error('Failed to register user');
             }
+
         } catch(error) {
-            showNotification(`Notification: ${error.response.data.message}`,'red');
-            console.log(error);
+            if(error.response.status === 429) {
+                    showNotification(`Notification: ${error.response.data}`,'red');
+                    console.log(error.response.data);
+            } else {
+                showNotification(`Notification: ${error.response.data.message}`,'red');
+                console.log(error);
+            }
         }
     }
 
