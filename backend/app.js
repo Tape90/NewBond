@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose'); 
 const multer = require('multer')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 require('dotenv').config()
 const PORT = process.env.PORT;
 app.use(cors());
@@ -49,15 +50,17 @@ const Post = mongoose.model("Post", postSchema);
 
 //create schema and model for user
 const userSchema = new mongoose.Schema({
-    id: String,
     fullname: String,
     email: String,
     password: String,
-    matriculationCertificate: String,
+    matriculationFile: String,
+    id: String,
     role: String
 });
 
 const User = mongoose.model("User", userSchema);
+
+
 
 
 
@@ -95,39 +98,48 @@ app.get("/api/posts", async (req, res) => {
 
 //create user route /register look if user already exists and if not create new user with bcrypt password in db
 app.use(express.json());
-app.post("/api/register", async (req, res) => {
-
-  console.log(req.body);
-
-  const { id, fullname, email, password,role } = req.body;
-  console.log(id,fullname,email,password,role)
-  if (!id || !fullname || !email || !password || !role) {
-      console.log("Please provide all fields");
-      return res.sendStatus(400).send({message: "Please provide all fields"});
-  }
-  //does user already exist in db?
-  const existUser = await User.findOne({ email });
-  if(existUser) {
-      console.log("User already exists");
+app.post("/api/register", async(req,res) => {
+    const {id, fullname, email, password, role} = req.body;
+    if(!id || !fullname || !email || !password || !role){
+        return res.status(404).send({message: "Please fill out all fields"});
+    } 
+  //check if user already exists
+  const existsUser = await User.findOne({email});
+  if(existsUser){
       return res.status(409).send({message: "User already exists"});
   }
-  // else {
-  //   //create new user
-  //   //hash password with bcrypt salt 10
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const user = new User({ id, fullname, email, password: hashedPassword,role });
-    try {
-      const newUser = await User.create(user);
-      console.log("User created");
+  //hash password
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = new User({id, fullname, email, password: hashedPassword, role});
+  try{
+      await User.create(user);
       res.status(201).send({message: "User created"});
-    } catch (error) {
-      console.error(error);
-      res.status(500).send({message: "Server error"});
+  } catch(error){
+     res.status(500).send({message: "Something went wrong"});
+  }
+})
+
+// Login route to send post request with email and password and check if user exists and if password is correct and to send back jwt token
+app.post("/api/login", async(req,res) => {
+    const {email, password} = req.body;
+    if(!email || !password){
+        return res.status(404).send({message: "Please fill out all fields"});
     }
-});
+    //check if user exists
+    const existUser = await User.findOne({email});
+    if(!existUser){
+        return res.status(401).send({message: "User does not exist"});
+    }
+    //check if password is correct
 
-
+    const isPasswordCorrect = await bcrypt.compare(password, existUser.password);
+    if(!isPasswordCorrect){
+        return res.status(401).send({message: "Password is not correct"});
+    }
+    //create jwt token
+    const token = jwt.sign({id: existUser._id}, process.env.JWT_SECRET);
+    res.status(200).send({token, message: "Login successful"});
+})
 
 //server running
 app.listen(PORT, () => {

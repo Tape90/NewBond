@@ -10,42 +10,40 @@ import showNotification from '../notification/showNotification';
 export default function Register() {
     const [equal,setEqual] = useState(false);
     const formRef = useRef();
-    const registerUser = async(e) => {
+
+    //Hier kommt die Funktion für die Registration
+    const registerUser = async (e) => {
         e.preventDefault();
         const form = formRef.current;
-        const data = {
+        const formData = {
+            id: uuidv4(),
             fullname: form.fullname.value,
             email: form.email.value,
             password: form.password.value,
-            id: uuidv4(),
-            role: "student",
-        };
-
-        // for (var pair of formData.entries()) {
-        //     console.log(pair[0]+ ', ' + pair[1]); 
-        // }
-
+            role: 'student'
+        }
+        console.log(formData);
         const config = {
-            url: "http://localhost:3001/api/register",
-            method: "POST",
+            url: 'http://localhost:3001/api/register',
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+                'Content-Type': 'application/json'
             },
-            data: JSON.stringify(data),
-          };
-        
+            data: JSON.stringify(formData)
+        }
         try {
             const response = await axios(config);
             console.log(response);
             showNotification(`Notification: ${response.data.message}`,'normal');
-            if (response.status !== 200 && response.status !== 201) {
-                throw new Error("Failed to register user");
+            if(response.status !== 201) {
+                throw new Error('Failed to register user');
             }
-        } catch (error) {
+        } catch(error) {
             showNotification(`Notification: ${error.response.data.message}`,'red');
-            console.log(error)
+            console.log(error);
         }
     }
+
     const checkPassword = () => { 
         console.log(formRef.current);  
         const form = formRef.current;
@@ -82,7 +80,7 @@ export default function Register() {
                 component='form'
                      
                 ref={formRef}
-                onSubmit={(e) => {registerUser(e)}}    
+                onSubmit={(e) => registerUser(e)}   
                 sx={{
                     height: '100%',
                     width: '100%',

@@ -8,7 +8,7 @@ import Feed from './components/Feed/Feed'
 import Welcome from './components/Welcome/welcome'
 import Login from './components/Login/Login'
 import Register from './components/Register/Register'
-
+ 
 
 function App() {
 
@@ -16,9 +16,9 @@ function App() {
   return (
     <ThemeProvider theme={customTheme}>
       <CssBaseline>
-        <Register/>
+        {/* <Register/> */}
         {/* <Welcome/>  */}
-        {/* <Login/> */}
+        <Login/>
         {/* <Feed/> */}
 
       </CssBaseline>

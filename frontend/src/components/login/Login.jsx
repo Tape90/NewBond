@@ -5,13 +5,30 @@ import QuoteCard from "../Cards/QuoteCard";
 import SubmitButton from "../Buttons/SubmitButton";
 import SmallHelperText from "../Texts/SmallHelperText";
 import {GoogleButton, AppleButton} from "../Buttons/SsoButtons";
+import showNotification from "../notification/showNotification";
 import { useRef } from "react";
+import axios from "axios";
 export default function Login() {
     const valueEmail = useRef();
     const valuePassword = useRef();
-    const handleClick = () => {
-        console.log(valueEmail.current.value);
-        console.log(valuePassword.current.value);
+    const handleClick = async(e) => {
+        e.preventDefault();
+        const data = {
+            email: valueEmail.current.value,
+            password: valuePassword.current.value
+        }
+        const config = {
+            url: "http://localhost:3001/api/login",
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: data
+        }
+        const response = await axios(config);
+        showNotification(response.data.message, "normal");
+        localStorage.setItem("token", response.data.token);
+        
     }
     return(
         <Box sx={{
