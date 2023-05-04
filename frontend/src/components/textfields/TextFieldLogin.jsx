@@ -2,10 +2,15 @@ import { Box } from "@mui/material";
 import TextField from '@mui/material/TextField';
 import {Button} from "@mui/material";
 import { useState, } from "react";
+import { useNavigate } from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 export default function TextfieldLogin({valueEmail,valuePassword}) {
     const [fieldType,setFieldType] = useState(true);
+    const navigator = useNavigate();
+    const handleRegisterClick = () => {
+        navigator("/register");
+    }
     return(
         <Box
         component="form"
@@ -58,7 +63,9 @@ export default function TextfieldLogin({valueEmail,valuePassword}) {
                 gap: "30%",
                 justifyContent: "start"
             }}>
-                <Button sx={{
+                <Button
+                onClick={handleRegisterClick}
+                sx={{
                     width: "30%",
                     color:  "text.primary"
      

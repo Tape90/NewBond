@@ -1,10 +1,10 @@
-import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 import ClickableExtendButtons from '../buttons/ClickableExtendButtons';
 import { Box } from '@mui/system';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
-export default function NavigateBar() {
+export default function NavigateBar({handleLogout}) {
     return(
         <>
          <Box sx={{
@@ -15,14 +15,15 @@ export default function NavigateBar() {
              justifyContent: "flex-start",
              backGroundColor: "success.main"
          }}>
-            <ClickableExtendButtons element={<LoginIcon sx={{
+            <ClickableExtendButtons element={<LogoutIcon sx={{
                 display: "block",
                 width: "32px",
                 height: "32px",
                 color: "text.primary",
                 borderRadius: "15%"
             }}
-            />} text={"Login"}/>
+            onClick={handleLogout}
+            />} text={"Log Out"}/>
             <ClickableExtendButtons element={<ChatOutlinedIcon sx={{
                 width: "32px",
                 height: "32px",

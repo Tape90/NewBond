@@ -6,11 +6,16 @@ import SubmitButton from "../Buttons/SubmitButton";
 import SmallHelperText from "../Texts/SmallHelperText";
 import {GoogleButton, AppleButton} from "../Buttons/SsoButtons";
 import showNotification from "../notification/showNotification";
-import { useRef } from "react";
+import { useRef,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
-export default function Login() {
+
+export default function Login({handleLogin}) {
+    const navigator = useNavigate();
     const valueEmail = useRef();
     const valuePassword = useRef();
+
     const handleClick = async(e) => {
         e.preventDefault();
         const data = {
@@ -25,10 +30,15 @@ export default function Login() {
             },
             data: data
         }
-        const response = await axios(config);
-        showNotification(response.data.message, "normal");
-        localStorage.setItem("token", response.data.token);
-        
+        try {
+            const response = await axios(config);
+            showNotification(response.data.message, "normal");
+            localStorage.setItem("token", response.data.token);
+            handleLogin();
+            navigator("/feed");
+        } catch (error) {
+            showNotification(error.response.data.message, "error");
+        }
     }
     return(
         <Box sx={{
