@@ -10,7 +10,7 @@ import SubmitButton from "../Buttons/SubmitButton";
 import PostModal from "../Modals/PostModal";
 import axios from "axios";
 
-export default function Feed() {
+export default function Feed({handleLogout}) {
     const [open,setOpen] = useState(false);
     const onModal = () => {
         setOpen(!open)
@@ -83,7 +83,7 @@ export default function Feed() {
                         color: "text.primary",
                         borderRadius: "15%"
                     }}/>
-                    } handleParam={!expand} handleClick={setExpand}/>
+                    } handleLogout={handleLogout} handleParam={!expand} handleClick={setExpand}/>
                 </Box>
                 <Box sx={{
                     height: "100%",

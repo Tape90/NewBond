@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import NavigateBar from "../Bars/NavigateBar";
 
 
-export default function ClickableExtendButtons({element,text,handleClick,handleParam,id,posts,setPosts}) {
+export default function ClickableExtendButtons({element,text,handleClick,handleParam,id,posts,setPosts,handleLogout}) {
   return (
     <>
       <Box sx={{
@@ -18,7 +18,7 @@ export default function ClickableExtendButtons({element,text,handleClick,handleP
             textAlign: "center"
           }}>{text}</p>}
       </Box>
-        {handleParam && <NavigateBar/>}
+        {handleParam && <NavigateBar handleLogout={handleLogout}/>}
     </>
   );
 }

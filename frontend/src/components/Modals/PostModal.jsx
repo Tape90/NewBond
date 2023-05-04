@@ -42,7 +42,7 @@ export default function PostModal({open,setOpen,posts,setPosts}) {
         formData.append("image", form.image.files[0]);
         formData.append("heart", 0);
         
-        
+
         // for (var pair of formData.entries()) {
         //     console.log(pair[0]+ ', ' + pair[1]); 
         // }
