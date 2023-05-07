@@ -22,8 +22,8 @@ export default function NavigateBar({handleLogout}) {
                 color: "text.primary",
                 borderRadius: "15%"
             }}
-            onClick={handleLogout}
-            />} text={"Log Out"}/>
+        
+            />} handleClick={handleLogout} text={"Log Out"}/>
             <ClickableExtendButtons element={<ChatOutlinedIcon sx={{
                 width: "32px",
                 height: "32px",

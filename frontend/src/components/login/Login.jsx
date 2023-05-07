@@ -6,16 +6,19 @@ import SubmitButton from "../Buttons/SubmitButton";
 import SmallHelperText from "../Texts/SmallHelperText";
 import {GoogleButton, AppleButton} from "../Buttons/SsoButtons";
 import showNotification from "../notification/showNotification";
-import { useRef,useEffect } from "react";
+import { useRef } from "react";
+//Navigator hook
 import { useNavigate } from "react-router-dom";
-
+//axios 
 import axios from "axios";
 
 export default function Login({handleLogin}) {
-    const navigator = useNavigate();
+
     const valueEmail = useRef();
     const valuePassword = useRef();
+    const navigator = useNavigate();
 
+    //Login request here
     const handleClick = async(e) => {
         e.preventDefault();
         const data = {
@@ -24,7 +27,7 @@ export default function Login({handleLogin}) {
         }
         const config = {
             url: "http://localhost:3001/api/login",
-            method: "post",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -32,14 +35,16 @@ export default function Login({handleLogin}) {
         }
         try {
             const response = await axios(config);
-            showNotification(response.data.message, "normal");
+            showNotification(`${response.data.message}`,"normal");
             localStorage.setItem("token", response.data.token);
-            handleLogin();
+            handleLogin(true);
             navigator("/feed");
-        } catch (error) {
-            showNotification(error.response.data.message, "error");
+
+        } catch(error) {
+            showNotification(`${error.response.data.message}`,"red");
         }
     }
+
     return(
         <Box sx={{
             width: "100vw",
@@ -85,7 +90,9 @@ export default function Login({handleLogin}) {
             rowGap: "10%",
             // border: "2px solid blue"
         }}>
-            <SubmitButton onHandleClick={handleClick} text={"Login"} heightVal={"20%"}/>
+            <SubmitButton
+            onHandleClick={handleClick}
+            text={"Login"} heightVal={"20%"}/>
             <SmallHelperText text={"or continue with"}/>
             <Box 
             sx={{

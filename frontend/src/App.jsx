@@ -2,34 +2,40 @@
 import { ThemeProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/material'
 
+//Usestate/Effect for token and BrowserRouter
+import { useState, useEffect } from 'react'
+import { BrowserRouter,Routes,Route,Navigate} from 'react-router-dom'
+
 //Theme
 import customTheme from './customTheme/customTheme'
 import Feed from './components/Feed/Feed'
 import Welcome from './components/Welcome/welcome'
 import Login from './components/login/Login'
 import Register from './components/Register/Register'
-import { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
+
+
  
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-
+  //get localstorage token and set state after getting to true
+  const [token, setToken] = useState(null);
+  const [isLoggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if(token) {
-      console.log("Ran")
-      setIsLoggedIn(true);
+      setLoggedIn(true);
+      setToken(token);
     }
   },[])
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    setLoggedIn(false);
+    setToken(null);
+    localStorage.removeItem("token");
   };
-
+  const handleLogin = ()  => {
+    setLoggedIn(true);
+    setToken(localStorage.getItem("token"));
+  };
 
   return (
     
@@ -37,12 +43,11 @@ function App() {
       <CssBaseline>
         <BrowserRouter>
           <Routes>
-              <Route path="/welcome" element={<Welcome/>}/>
-              <Route path="/register" element={<Register/>}/>
-              <Route path="/login" element={<Login handleLogin={handleLogin}/>}/>
-              <Route path="/feed" element={isLoggedIn ? <Feed handleLogout={handleLogout} /> : <Navigate to="/login" replace />} />
-        
-              <Route path="/" element={isLoggedIn ? <Navigate to="/feed" /> : <Navigate to="/welcome" replace />} />
+            <Route path="/welcome" element={ <Welcome/>}/>
+            <Route path="/register" element={<Register/>}/>
+            <Route path="/login" element={token ? <Navigate to="/feed"/> : <Login handleLogin={handleLogin}/>}/>
+            <Route path="/feed" element={token ? <Feed handleLogout={handleLogout}/> : <Navigate to="/login"/>}/>
+            <Route path="/" element={token ? <Navigate to="/feed"/> : <Navigate to="/welcome" replace/>}/>
           </Routes>
         </BrowserRouter>
 
