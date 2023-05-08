@@ -192,7 +192,7 @@ app.post("/api/login", async(req, res) => {
 app.post("/api/:postId/like", async(req,res) => {
   try {
     //get post id from params
-    const {postId} = req.params.postId;
+    const postId = req.params.postId;
     //Token validation
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -200,18 +200,21 @@ app.post("/api/:postId/like", async(req,res) => {
 
     //check if user already liked post
     const user = await User.findOne({id: userId});
-    if(user.likePostsId.includes(postId)){
-      return res.status(409).send({message: "User already liked post"});
+    console.log(user.likePostsId.includes(postId))
+    if(!user.likePostsId.includes(postId)){
+        //find post and increase heart count
+      const post = await Post.findOneAndUpdate({id:postId}, {$inc: {heart: 1}});
+      console.log(post)
+      if(!post){
+        return res.status(404).send({message: "Post not found"});
+      }
+      //add post id to user likePostsId array
+      await user.likePostsId.push(postId);
+      await user.save();
+      res.status(200).send({message: "Post liked", post});
+  } else {
+      return res.status(409).send({message: `User already liked post`});
     }
-    //find post and increase heart count
-    const post = await Post.findOneAndUpdate(postId, {$inc: {heart: 1}});
-    if(!post){
-      return res.status(404).send({message: "Post not found"});
-    }
-    //add post id to user likePostsId array
-    user.likePostsId.push(postId);
-    await user.save();
-    res.status(200).send({message: "Post liked", post});
   } catch (error) {
     console.log(error);
     res.status(500).send({message: "Internal Server Error"});

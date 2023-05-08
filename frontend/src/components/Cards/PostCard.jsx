@@ -12,6 +12,7 @@ import { useState} from "react";
 
 export default function PostCard({id,pictureUrl,title,place,instaLink,cost,heart,posts,setPosts}) {
     const [url,setUrl] = useState(pictureUrl);
+    const [postTitle,setPostTitle] = useState(title);
     const addLike = async(id,posts,setPosts) => {
         //add like to clicked post if 0 else remove like
         const newPosts = await Promise.all(
@@ -30,6 +31,7 @@ export default function PostCard({id,pictureUrl,title,place,instaLink,cost,heart
                         const response = await axios(config);
                         console.log(response.data)
                         setUrl(response.data.post.imageUrl);
+
                         return response.data.post;
                         }
                     catch (error) {
@@ -37,9 +39,21 @@ export default function PostCard({id,pictureUrl,title,place,instaLink,cost,heart
                             return post;
                     }
                     }
+                return post;
             })
         );
-        setPosts(newPosts);
+        setPosts(newPosts.map((post) => {
+            return {
+                id: post.id,
+                pictureUrl: post.imageUrl,
+                title: post.title,
+                place: post.place,
+                instaLink: post.instaLink,
+                cost: post.cost,
+                heart: post.heart
+            }
+        })
+        );
     }
     return(
         <>
@@ -62,7 +76,7 @@ export default function PostCard({id,pictureUrl,title,place,instaLink,cost,heart
                     display: "grid",
                     gridTemplateRows: "25% 75%",
                 }}>
-                    <Headline  weight={"28px"} text={title}/>
+                    <Headline  weight={"28px"} text={postTitle}/>
                     <Box sx={{
                         height: "100%",
                         width: "100%",
