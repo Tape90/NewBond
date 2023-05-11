@@ -4,21 +4,24 @@ const cors = require('cors');
 const mongoose = require('mongoose'); 
 const multer = require('multer')
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const expressLimit = require('express-rate-limit');
+//http proxy server
+
+//JSON WEB TOKEN
+const jwt = require("jsonwebtoken");
+//express limit
+const limiter = require("express-rate-limit");
 require('dotenv').config()
 const PORT = process.env.PORT;
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
+//proxy for external apis
 
 
 //limit requests to 100 per 15 minutes
-const limiter = expressLimit({
+const limit = limiter({
     windowMs: 15 * 60 * 1000,
-    max: 50,
-    message: "Too many requests from this IP, please try again in 15 minutes",
-  });
-
+    max: 100
+})
 
 
 // multer storage config
@@ -51,7 +54,10 @@ const postSchema = new mongoose.Schema({
     instagramLink: String,
     price: String,
     imageUrl: String,
-    heart: Number
+    heart: {
+      type: Number,
+      default: 0
+    }
 });
 
 const Post = mongoose.model("Post", postSchema);
@@ -61,12 +67,14 @@ const userSchema = new mongoose.Schema({
     fullname: {
       type: String,
       required: true,
+      unique: true,
       minlegth: 3,
       maxlength: 50,
     },
     email: {
       type: String,
       required: true,
+      unique: true,
       minlegth: 8,
       maxlength: 50,
     },
@@ -85,6 +93,10 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: true,
       enum: ["student", "parent", "admin"]
+    },
+    likePostsId: {
+      type: Array,
+      default: []
     }
 });
 
@@ -129,7 +141,7 @@ app.get("/api/posts", async (req, res) => {
 //create user route /register look if user already exists and if not create new user with bcrypt password in db
 app.use(express.json());
 try {
-  app.post("/api/register", limiter, async(req,res) => {
+  app.post("/api/register", limit, async(req,res) => {
       const {id, fullname, email, password, role} = req.body;
       if(!id || !fullname || !email || !password || !role){
           return res.status(404).send({message: "Please fill out all fields"});
@@ -157,26 +169,57 @@ try {
 }
 
 // Login route to send post request with email and password and check if user exists and if password is correct and to send back jwt token
-app.post("/api/login", async(req,res) => {
-    const {email, password} = req.body;
-    if(!email || !password){
-        return res.status(404).send({message: "Please fill out all fields"});
-    }
-    //check if user exists
-    const existUser = await User.findOne({email});
-    if(!existUser){
-        return res.status(401).send({message: "User does not exist"});
-    }
-    //check if password is correct
+app.post("/api/login", async(req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password){
+    return res.status(404).send({message: "Please fill out all fields"});
+  }
+  //check if user exists
+  const existUser = await User.findOne({email});
+  if(!existUser){
+    return res.status(401).send({message: "User does not exist"});	
+  }
+  //check if password is correct
+  const isPasswordCorrect = await bcrypt.compare(password, existUser.password);
+  if(!isPasswordCorrect){
+    return res.status(401).send({message: "Password is incorrect"});
+  }
+  //create jwt token
+  const token = jwt.sign({id: existUser.id}, process.env.JWT_SECRET);
+  res.status(200).send({token,message: "Login successful"});
+});
 
-    const isPasswordCorrect = await bcrypt.compare(password, existUser.password);
-    if(!isPasswordCorrect){
-        return res.status(401).send({message: "Password is not correct"});
+app.post("/api/:postId/like", async(req,res) => {
+  try {
+    //get post id from params
+    const postId = req.params.postId;
+    //Token validation
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decodedToken.id;
+
+    //check if user already liked post
+    const user = await User.findOne({id: userId});
+    console.log(user.likePostsId.includes(postId))
+    if(!user.likePostsId.includes(postId)){
+        //find post and increase heart count
+      const post = await Post.findOneAndUpdate({id:postId}, {$inc: {heart: 1}});
+      console.log(post)
+      if(!post){
+        return res.status(404).send({message: "Post not found"});
+      }
+      //add post id to user likePostsId array
+      await user.likePostsId.push(postId);
+      await user.save();
+      res.status(200).send({message: "Post liked", post});
+  } else {
+      return res.status(409).send({message: `User already liked post`});
     }
-    //create jwt token
-    const token = jwt.sign({id: existUser._id}, process.env.JWT_SECRET);
-    res.status(200).send({token, message: "Login successful"});
-})
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({message: "Internal Server Error"});
+  }
+});
 
 //server running
 app.listen(PORT, () => {

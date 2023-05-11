@@ -4,15 +4,16 @@ import { TextField } from '@mui/material';
 import { Button } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { v4 as uuidv4 } from 'uuid';
+
+//Navigation hook
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import showNotification from '../notification/showNotification';
 
 export default function Register() {
     const [equal,setEqual] = useState(false);
-    const navigator = useNavigate();
     const formRef = useRef();
-
+    const navigator = useNavigate();
     //Hier kommt die Funktion für die Registration
     const registerUser = async (e) => {
         e.preventDefault();
@@ -37,7 +38,8 @@ export default function Register() {
             const response = await axios(config);
             console.log(response);
             showNotification(`Notification: ${response.data.message}`,'normal');
-            navigator("/login");
+            //navigate to login page
+            navigator('/login');
             if(response.status !== 201) {
                 throw new Error('Failed to register user');
             }

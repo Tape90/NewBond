@@ -6,23 +6,54 @@ import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
 import SavingsOutlinedIcon from '@mui/icons-material/SavingsOutlined';
 import SubmitButton from "../Buttons/SubmitButton";
 import Diversity2OutlinedIcon from '@mui/icons-material/Diversity2Outlined';
+import axios from "axios";
+import { useState} from "react";
 
 
 export default function PostCard({id,pictureUrl,title,place,instaLink,cost,heart,posts,setPosts}) {
-    const addLike = (id,posts,setPosts) => {
+    const [url,setUrl] = useState(pictureUrl);
+    const [postTitle,setPostTitle] = useState(title);
+    const addLike = async(id,posts,setPosts) => {
         //add like to clicked post if 0 else remove like
-        const newPosts = posts.map((post) => {
-            if(post.id === id) {
-                if(post.heart === 0) {
-                    return {...post, heart: heart + 1}
-                } else {
-                    return {...post, heart: heart - 1}
-                }
-            } else {
-                return post
+        const newPosts = await Promise.all(
+            posts.map(async(post) => {
+                if(post.id === id) {
+                    const postId = post.id;
+                    try {
+                        const config = {
+                            url: `http://localhost:3001/api/${postId}/like`,
+                            method: "post",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${localStorage.getItem("token")}`
+                            },
+                        };
+                        const response = await axios(config);
+                        console.log(response.data)
+                        setUrl(response.data.post.imageUrl);
+
+                        return response.data.post;
+                        }
+                    catch (error) {
+                            console.log(error);
+                            return post;
+                    }
+                    }
+                return post;
+            })
+        );
+        setPosts(newPosts.map((post) => {
+            return {
+                id: post.id,
+                pictureUrl: post.imageUrl,
+                title: post.title,
+                place: post.place,
+                instaLink: post.instaLink,
+                cost: post.cost,
+                heart: post.heart
             }
         })
-        setPosts(newPosts)
+        );
     }
     return(
         <>
@@ -40,12 +71,12 @@ export default function PostCard({id,pictureUrl,title,place,instaLink,cost,heart
                     justifySelf: "center"
                 }}
                 alt="Hebammenverband Logo"
-                src={pictureUrl}/>
+                src={url}/>
                 <Box sx={{
                     display: "grid",
                     gridTemplateRows: "25% 75%",
                 }}>
-                    <Headline  weight={"28px"} text={title}/>
+                    <Headline  weight={"28px"} text={postTitle}/>
                     <Box sx={{
                         height: "100%",
                         width: "100%",

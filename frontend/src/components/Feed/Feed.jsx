@@ -83,7 +83,7 @@ export default function Feed({handleLogout}) {
                         color: "text.primary",
                         borderRadius: "15%"
                     }}/>
-                    } handleLogout={handleLogout} handleParam={!expand} handleClick={setExpand}/>
+                    }  handleLogout={handleLogout} handleParam={!expand} handleClick={setExpand}/>
                 </Box>
                 <Box sx={{
                     height: "100%",

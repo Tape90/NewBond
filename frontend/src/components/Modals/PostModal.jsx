@@ -5,6 +5,7 @@ import {Button} from "@mui/material";
 import { useRef,useState } from "react";
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid';
+import showNotification from "../notification/showNotification";
 
 //write a function that sends the input values to the backend
 //write a function that is able to upload a image to the express server
@@ -15,15 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 
-function logRef(ref) {
-    //log the input values from all the textfields
-    console.log(ref.current.image.value)
-    console.log(ref.current.title.value);
-    console.log(ref.current.location.value);
-    console.log(ref.current.instagramLink.value);
-    console.log(ref.current.price.value);
 
-}
 
 export default function PostModal({open,setOpen,posts,setPosts}) {
     const formRef = useRef();
@@ -57,6 +50,7 @@ export default function PostModal({open,setOpen,posts,setPosts}) {
             data: formData
           }
           const response = await axios(options);
+          showNotification("Created Post", "normal");
           console.log(response.data); 
           if (!response.ok) {
             throw new Error("Failed to create post");

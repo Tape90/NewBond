@@ -3,12 +3,12 @@ import { useState } from "react";
 import {Button} from "@mui/material";
 import axios from "axios"
 
-const handleLoad = async(handleAuthor,handleQuote) => {
 
-    const resp = await axios("https://api.quotable.io/random");
-    handleAuthor(resp.data.author);
-    handleQuote(resp.data.content);
-    console.log(resp.data);
+const handleLoad = async(handleAuthor,handleQuote) => {
+        const resp = await axios('http://localhost:8080/https://zenquotes.io/api/random');
+        handleAuthor(resp.data[0].a);
+        handleQuote(resp.data[0].q);
+        console.log(resp.data[0].q);
 
 }
 
