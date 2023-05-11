@@ -75,7 +75,10 @@ export default function TextfieldLogin({valueEmail,valuePassword}) {
                     color:  "text.primary"
      
                 }}>Register</Button>
-                <Button sx={{
+                <Button 
+                // onclick funtion to navigate to reset page
+                onClick={() => navigator("/reset/askEmail")}
+                sx={{
                     width: "30%",
                     color:  "text.primary"
                 }}>Forgot Password?</Button>

@@ -13,6 +13,7 @@ import { useState} from "react";
 export default function PostCard({id,pictureUrl,title,place,instaLink,cost,heart,posts,setPosts}) {
     const [url,setUrl] = useState(pictureUrl);
     const [postTitle,setPostTitle] = useState(title);
+    
     const addLike = async(id,posts,setPosts) => {
         //add like to clicked post if 0 else remove like
         const newPosts = await Promise.all(
