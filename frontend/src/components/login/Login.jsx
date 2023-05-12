@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Headline from "../Headers/Headline";
 import TextfieldLogin from "../Textfields/TextFieldLogin";
 import QuoteCard from "../Cards/QuoteCard";
@@ -42,6 +42,22 @@ export default function Login({handleLogin}) {
 
         } catch(error) {
             showNotification(`${error.response.data.message}`,"red");
+        }
+    }
+    const googleHandleLogin= async() => {
+        const config = {
+            url: "http://localhost:3001/api/auth/google",
+            method: "GET",  
+        }
+        const response = await axios(config);
+        if(response === 200) {
+            console.log(response);
+            handleLogin(true);
+            navigator("/feed");
+        }
+        else {
+            console.log(response);
+            showNotification("Something went wrong","red");
         }
     }
 
@@ -101,9 +117,10 @@ export default function Login({handleLogin}) {
                 gap: "1%",
                 justifyContent: "center",
                 alignItems: "center"
-            }}>
-                <GoogleButton/>
-                <AppleButton/>
+            }}> 
+                <Button onClick={googleHandleLogin}><GoogleButton/></Button>
+                <Button><AppleButton/></Button>
+                
             </Box>
         </Box>
         </Box>
