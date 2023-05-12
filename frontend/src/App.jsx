@@ -21,6 +21,7 @@ function App() {
   //get localstorage token and set state after getting to true
   const [token, setToken] = useState(null);
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [resetAllowed,setResetAllowed] = useState(false);
   const [resetNumber, setResetNumber] = useState(0);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -51,6 +52,9 @@ function App() {
             <Route path="/feed" element={token ? <Feed handleLogout={handleLogout}/> : <Navigate to="/login"/>}/>
             <Route path="/" element={token ? <Navigate to="/feed"/> : <Navigate to="/welcome" replace/>}/>
             <Route path="/reset/askEmail" element={<ResetPage text={"Type in your Email to reset passwort"} resetNumber={resetNumber} setResetNumber={setResetNumber}/>}/>
+            <Route path="/reset/verify" element={<ResetPage text={"Type in the code you received via Email"} resetNumber={resetNumber} 
+            setResetAllowed={setResetAllowed} setResetNumber={setResetNumber}/>}/>
+            <Route path="/reset/newPassword" element={ resetAllowed ?<ResetPage text={"Type in your new Password"}/> : <Navigate to="/login"/>}/>
           </Routes>
         </BrowserRouter>
 

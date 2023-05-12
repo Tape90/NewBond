@@ -5,7 +5,11 @@ const mongoose = require('mongoose');
 const multer = require('multer')
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
-//http proxy server
+//passport
+const passport = require("passport");
+//cookie session
+const cookieSession = require("cookie-session");
+
 
 //JSON WEB TOKEN
 const jwt = require("jsonwebtoken");
@@ -13,10 +17,19 @@ const jwt = require("jsonwebtoken");
 const limiter = require("express-rate-limit");
 require('dotenv').config()
 const PORT = process.env.PORT;
-app.use(cors());
-app.use('/uploads', express.static('uploads'));
-//proxy for external apis
 
+app.use('/uploads', express.static('uploads'));
+
+//cookie session config
+app.use(cookieSession({
+  name: "session",
+  keys: [process.env.COOKIE_KEY],
+  maxAge: 24 * 60 * 60 * 1000 //24 hours  
+}))
+
+//passport config
+app.use(passport.initialize());
+app.use(passport.session());
 
 //limit requests to 100 per 15 minutes
 const limit = limiter({
@@ -103,14 +116,36 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
+//passportSetup
+require("./passportSetup");
 
+const corsOptions = {
+  origin: ['http://localhost', 'http://127.0.0.1:5173', 'http://localhost:3001'],
+};
 
+app.use(cors(corsOptions));
+// Set up the Google OAuth routes
+app.get('/api/auth/google', passport.authenticate('google', { scope: ['profile'] }));
 
+app.get(
+  '/api/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/failureRedirect' }),
+  (req, res) => {
+    // Redirect the user to the frontend's success page or perform any other necessary actions.
+    res.status(200).send({message: "success"});
+  }
+);
 
 //home route
 app.get("/",(req,res) => {
     res.send("hallo Welt");
 })
+
+//failure redirect
+app.get("/failureRedirect", (req,res) => {
+  res.status(200).send({message: "failure"});
+})
+
 
 //create post route
 app.post("/api/posts", upload.single("image"), async (req, res) => {
@@ -263,7 +298,9 @@ app.post("/api/auth/reset", async(req,res,next) => {
           return res.status(500).send({message: "Internal Server Error"});
         } else {
           console.log("Email sent: " + info.response);
-          return res.status(200).send({message: "Email sent", code});
+          //set token with email
+          const token = jwt.sign({email: email}, process.env.JWT_SECRET);
+          return res.status(200).send({message: "Email sent",token:token, code});
         }
       }
       )
@@ -272,6 +309,35 @@ app.post("/api/auth/reset", async(req,res,next) => {
       return res.status(500).send({ message: "Internal Server Error" });
     }
 })
+
+app.post("/api/auth/reset/newPassword", async(req,res) => {
+  const password = req.body.password;
+  const token = req.headers.authorization.split(" ")[1];
+  if(!password || !token){
+    res.status(404).send({message: "Unvalid input"});
+  }
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const existUser = User.findOne({email: decodedToken.email});
+    if(!existUser){
+      return res.status(409).send({message: "User does not exist"});
+  }
+  //hash password
+  const hashedPassword = await bcrypt.hash(password, 10);
+  //update user password
+  const user = await User.findOneAndUpdate({email: decodedToken.email}, {password: hashedPassword});
+  if(!user){
+    return res.status(404).send({message: "User not found"});
+  }
+    res.status(200).send({message: "Password updated!"});
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({message: "Internal Server Error"});
+  }
+
+})
+
+
 
 //server running
 app.listen(PORT, () => {
