@@ -3,6 +3,7 @@ import ClickableExtendButtons from '../buttons/ClickableExtendButtons';
 import { Box } from '@mui/system';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import MapIcon from '@mui/icons-material/Map';
 
 export default function NavigateBar({handleLogout}) {
     return(
@@ -38,7 +39,13 @@ export default function NavigateBar({handleLogout}) {
                 borderRadius: "15%"
             }}
             />} text={"Profil"}/>
-  
+            <ClickableExtendButtons element={<MapIcon sx={{
+                width: "32px",
+                height: "32px",
+                color: "text.primary",
+                borderRadius: "15%"
+            }}
+            />} text={"Map"}/>
          </Box>
         </>
     );

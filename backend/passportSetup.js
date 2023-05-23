@@ -7,7 +7,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      //callbackURL: process.env.REDIRECT_URI, // This should match the frontend's redirect URL, does not be specified!
+      callbackURL: process.env.REDIRECT_URI, 
     },
     (accessToken, refreshToken, profile, done) => {
       // Here you can handle the user's profile returned by Google

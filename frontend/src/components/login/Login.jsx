@@ -7,6 +7,7 @@ import SmallHelperText from "../Texts/SmallHelperText";
 import {GoogleButton, AppleButton} from "../Buttons/SsoButtons";
 import showNotification from "../notification/showNotification";
 import { useRef } from "react";
+
 //Navigator hook
 import { useNavigate } from "react-router-dom";
 //axios 
@@ -53,7 +54,7 @@ export default function Login({handleLogin}) {
         if(response === 200) {
             console.log(response);
             handleLogin(true);
-            navigator("/feed");
+            navigator("/login");
         }
         else {
             console.log(response);

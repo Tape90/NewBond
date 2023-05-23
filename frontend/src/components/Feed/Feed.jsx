@@ -33,7 +33,9 @@ export default function Feed({handleLogout}) {
             };
           });
           console.log(newPosts);
-          setPosts(newPosts);
+          setTimeout(() => {
+            setPosts(newPosts);
+          }, 1000);
         } catch (error) {
           console.log(error);
         }
