@@ -1,4 +1,4 @@
-import { Box } from "@mui/material"
+import { Box,Button} from "@mui/material"
 import HomeIcon from '@mui/icons-material/Home';
 import ClickableExtendButtons from "../buttons/ClickableExtendButtons";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -6,15 +6,27 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useState,useEffect } from "react";
 import PostCard from "../Cards/PostCard";
 import { v4 as uuidv4 } from 'uuid';
+import MapIcon from '@mui/icons-material/Map';
 import SubmitButton from "../Buttons/SubmitButton";
+import MapModal from "../Modals/MapModal";
 import PostModal from "../Modals/PostModal";
 import axios from "axios";
 
+
 export default function Feed({handleLogout}) {
     const [open,setOpen] = useState(false);
+    const [showMapModal,setMapModal] = useState(false);
     const onModal = () => {
         setOpen(!open)
     }
+    
+    const openMapModal = () => {
+        setMapModal(true);
+    }
+    const closeMapModal = () => {
+        setMapModal(false);
+    }
+
     const [expand,setExpand] = useState(true);
     const [posts,setPosts] = useState([]);
     const getPostFromBackend = async () => {
@@ -30,6 +42,8 @@ export default function Feed({handleLogout}) {
               instaLink: post.instagramLink,
               cost: post.price,
               heart: post.heart,
+              latitude: post.latitude,
+              longitude: post.longitude
             };
           });
           console.log(newPosts);
@@ -122,10 +136,20 @@ export default function Feed({handleLogout}) {
                 }}>
                     <SubmitButton text={"Make new Bond ➕"} postionVal={"sticky"} onHandleClick={onModal}/>
                     {/* add the modal when the button is clicked else nothing*/}
-
+                    <Button onClick={openMapModal}><MapIcon sx={{
+                        width: "32px",
+                        height: "32px",
+                        color: "text.primary",
+                        borderRadius: "15%"
+                    }}
+                    /></Button>
+                    
 
                 </Box>
                     {open ? <PostModal open={open} setOpen={setOpen} posts={posts} setPosts={setPosts}/> : null}
+                    {showMapModal ? <MapModal showMapModal={showMapModal} posts={posts} closeMapModal={closeMapModal}/> : null}
+
+                
  
 
             </Box>

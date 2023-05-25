@@ -45,22 +45,22 @@ export default function Login({handleLogin}) {
             showNotification(`${error.response.data.message}`,"red");
         }
     }
-    const googleHandleLogin= async() => {
-        const config = {
-            url: "http://localhost:3001/api/auth/google",
-            method: "GET",  
-        }
-        const response = await axios(config);
-        if(response === 200) {
-            console.log(response);
-            handleLogin(true);
-            navigator("/login");
-        }
-        else {
-            console.log(response);
-            showNotification("Something went wrong","red");
-        }
-    }
+    // const googleHandleLogin= async() => {
+    //     const config = {
+    //         url: "http://localhost:3001/api/auth/google",
+    //         method: "GET",  
+    //     }
+    //     const response = await axios(config);
+    //     if(response === 200) {
+    //         console.log(response);
+    //         handleLogin(true);
+    //         navigator("/login");
+    //     }
+    //     else {
+    //         console.log(response);
+    //         showNotification("Something went wrong","red");
+    //     }
+    // }
 
     return(
         <Box sx={{
@@ -119,7 +119,7 @@ export default function Login({handleLogin}) {
                 justifyContent: "center",
                 alignItems: "center"
             }}> 
-                <Button onClick={googleHandleLogin}><GoogleButton/></Button>
+                <Button><GoogleButton/></Button>
                 <Button><AppleButton/></Button>
                 
             </Box>

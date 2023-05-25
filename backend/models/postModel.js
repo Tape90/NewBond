@@ -11,8 +11,8 @@ const postSchema = new mongoose.Schema({
       type: Number,
       default: 0
     },
-    lat: Number,
-    long: Number
+    latitude: Number,
+    longitude: Number,
 });
 
 const Post = mongoose.model("Post", postSchema);

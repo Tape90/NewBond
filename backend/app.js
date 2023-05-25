@@ -2,9 +2,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose'); 
-const passport = require("passport");
-//cookie session
-const cookieSession = require("cookie-session");
 
 require('dotenv').config()
 const PORT = process.env.PORT;
@@ -15,20 +12,10 @@ const registerRouter = require('./routes/register');
 const loginRouter = require('./routes/login')
 const passwordResetRouter = require('./routes/passwordReset');
 const postActionRouter = require('./routes/postAction');
-// const ssoAuthRouter = require('./routes/ssoAuth');
+
 
 app.use('/uploads', express.static('uploads'));
-
-//cookie session config
-app.use(cookieSession({
-  name: "session",
-  keys: [process.env.COOKIE_KEY],
-  maxAge: 24 * 60 * 60 * 1000 //24 hours  
-}))
-
-//passport config
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(cors());
 
 
 
@@ -42,19 +29,6 @@ app.use(async function(req,res,next) {
 })
 
 
-require("./passportSetup");
-app.use(cors());
-// Set up the Google OAuth routes
-app.get('/api/auth/google', passport.authenticate('google', { scope: ['profile'] }));
-
-app.get(
-  '/api/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/failureRedirect' }),
-  (req, res) => {
-    // Redirect the user to the frontend's success page or perform any other necessary actions.
-    res.status(200).send({message: "success"});
-  }
-);
 
 //home route
 app.get("/",(req,res) => {
