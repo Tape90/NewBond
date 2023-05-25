@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"nodemon run dev proxy.js\"  \"cd backend && nodemon run dev app.js\"  \"cd frontend && npm run dev\""
+    "start": "concurrently  \"cd backend && nodemon run dev app.js\"  \"cd frontend && npm run dev\""
   },
   "repository": {
     "type": "git",
