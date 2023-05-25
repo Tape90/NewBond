@@ -38,7 +38,7 @@ app.use(async function(req,res,next) {
 
 //home route
 app.get("/",(req,res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  res.json("/");
 })
 
 //failure redirect
