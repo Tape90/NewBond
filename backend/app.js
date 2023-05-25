@@ -22,7 +22,7 @@ app.use('/uploads', express.static('uploads'));
 app.use(cors());
 
 
-
+//abc kurz
 
 
 //connect to db
