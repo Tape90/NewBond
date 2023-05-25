@@ -1,4 +1,3 @@
-import customTheme from '../../customTheme/customTheme'
 
 export default function Headline({weight,text}) {
     return(

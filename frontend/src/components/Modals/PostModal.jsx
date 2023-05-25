@@ -5,7 +5,7 @@ import {Button} from "@mui/material";
 import { useRef,useState } from "react";
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid';
-import showNotification from "../notification/showNotification";
+import showNotification from "../notification/showNotification.js";
 
 //write a function that sends the input values to the backend
 //write a function that is able to upload a image to the express server

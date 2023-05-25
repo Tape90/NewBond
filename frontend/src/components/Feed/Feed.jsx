@@ -1,15 +1,15 @@
 import { Box,Button} from "@mui/material"
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from '@mui/icons-material/Home.jsx';
 import ClickableExtendButtons from "../buttons/ClickableExtendButtons";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useState,useEffect } from "react";
-import PostCard from "../Cards/PostCard";
+import PostCard from "../Cards/PostCard.jsx";
 import { v4 as uuidv4 } from 'uuid';
 import MapIcon from '@mui/icons-material/Map';
 import SubmitButton from "../Buttons/SubmitButton";
-import MapModal from "../Modals/MapModal";
-import PostModal from "../Modals/PostModal";
+import MapModal from "../Modals/MapModal.jsx";
+import PostModal from "../Modals/PostModal.jsx";
 import axios from "axios";
 
 

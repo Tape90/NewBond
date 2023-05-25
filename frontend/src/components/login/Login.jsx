@@ -1,11 +1,11 @@
 import { Box, Button } from "@mui/material";
-import Headline from "../Headers/Headline";
-import TextfieldLogin from "../Textfields/TextFieldLogin";
-import QuoteCard from "../Cards/QuoteCard";
-import SubmitButton from "../Buttons/SubmitButton";
-import SmallHelperText from "../Texts/SmallHelperText";
-import {GoogleButton, AppleButton} from "../Buttons/SsoButtons";
-import showNotification from "../notification/showNotification";
+import Headline from "../Headers/Headline.jsx";
+import TextfieldLogin from "../Textfields/TextFieldLogin.jsx";
+import QuoteCard from "../Cards/QuoteCard.jsx";
+import SubmitButton from "../Buttons/SubmitButton.jsx";
+import SmallHelperText from "../Texts/SmallHelperText.jsx";
+import {GoogleButton, AppleButton} from "../Buttons/SsoButtons.jsx";
+import showNotification from "../notification/showNotification.js";
 import { useRef } from "react";
 
 //Navigator hook

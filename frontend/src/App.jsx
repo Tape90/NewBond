@@ -7,12 +7,12 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter,Routes,Route,Navigate} from 'react-router-dom'
 
 //Theme
-import customTheme from './customTheme/customTheme'
+import customTheme from './customTheme/customTheme.js'
 import Feed from './components/Feed/Feed'
-import Welcome from './components/Welcome/welcome'
-import Login from './components/login/Login'
-import Register from './components/Register/Register'
-import ResetPage from './components/Resetpage/ResetPage'
+import Welcome from './components/welcome/Welcome.jsx'
+import Login from './components/login/Login.jsx'
+import Register from './components/Register/Register.jsx'
+import ResetPage from './components/Resetpage/ResetPage.jsx'
 
 
  
