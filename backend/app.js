@@ -20,7 +20,7 @@ app.use('/uploads', express.static('uploads'));
 app.use(cors());
 
 //serve static build folder
-// app.use(express.static(path.join(__dirname, '../frontend/dist')));
+app.use(express.static(path.join(__dirname, '../frontend/dist/')));
 
 
 
