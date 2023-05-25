@@ -4,7 +4,7 @@ import ClickableExtendButtons from "../buttons/ClickableExtendButtons";
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
 import SavingsOutlinedIcon from '@mui/icons-material/SavingsOutlined';
-import SubmitButton from "../Buttons/SubmitButton.jsx";
+import SubmitButton from "../buttons/SubmitButton.jsx";
 import Diversity2OutlinedIcon from '@mui/icons-material/Diversity2Outlined';
 import axios from "axios";
 import { useState} from "react";

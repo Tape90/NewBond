@@ -1,5 +1,5 @@
 import LogoutIcon from '@mui/icons-material/Logout';
-import ClickableExtendButtons from '../buttons/ClickableExtendButtons';
+import ClickableExtendButtons from '../buttons/ClickableExtendButtons.jsx';
 import { Box } from '@mui/system';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';

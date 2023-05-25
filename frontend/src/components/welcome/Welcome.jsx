@@ -1,7 +1,7 @@
 import Headline from "../Headers/Headline.jsx";
 import { Box, ThemeProvider } from "@mui/material";
-import WelcomePicture from "../Pictures/WelcomePicture.jsx";
-import SubmitButton from "../Buttons/SubmitButton.jsx";
+import WelcomePicture from "../pictures/WelcomePicture.jsx";
+import SubmitButton from "../buttons/SubmitButton.jsx";
 import {useNavigate} from "react-router-dom";
 
 export default function Welcome(){

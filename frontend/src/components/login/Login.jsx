@@ -1,10 +1,10 @@
 import { Box, Button } from "@mui/material";
 import Headline from "../Headers/Headline.jsx";
-import TextfieldLogin from "../Textfields/TextFieldLogin.jsx";
+import TextfieldLogin from "../textfields/TextFieldLogin.jsx";
 import QuoteCard from "../Cards/QuoteCard.jsx";
-import SubmitButton from "../Buttons/SubmitButton.jsx";
+import SubmitButton from "../buttons/SubmitButton.jsx";
 import SmallHelperText from "../Texts/SmallHelperText.jsx";
-import {GoogleButton, AppleButton} from "../Buttons/SsoButtons.jsx";
+import {GoogleButton, AppleButton} from "../buttons/SsoButtons.jsx";
 import showNotification from "../notification/showNotification.js";
 import { useRef } from "react";
 
