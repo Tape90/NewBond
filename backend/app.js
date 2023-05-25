@@ -13,14 +13,14 @@ const loginRouter = require('./routes/login')
 const passwordResetRouter = require('./routes/passwordReset');
 const postActionRouter = require('./routes/postAction');
 
-app.use(express.static(path.join(__dirname, "../frontend/dist/")));
+
 
 
 app.use('/uploads', express.static('uploads'));
 app.use(cors());
 
 //serve static build folder
-app.use(express.static(path.join(__dirname, '../frontend/dist/')));
+app.use(express.static(path.join(__dirname, '../frontend/dist/**')));
 
 
 
