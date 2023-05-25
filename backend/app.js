@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose'); 
-
+var path = require('path');
 require('dotenv').config()
 const PORT = process.env.PORT;
 
@@ -13,9 +13,14 @@ const loginRouter = require('./routes/login')
 const passwordResetRouter = require('./routes/passwordReset');
 const postActionRouter = require('./routes/postAction');
 
+app.use(express.static(path.join(__dirname, "../frontend/dist/")));
+
 
 app.use('/uploads', express.static('uploads'));
 app.use(cors());
+
+//serve static build folder
+// app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 
 
@@ -32,7 +37,7 @@ app.use(async function(req,res,next) {
 
 //home route
 app.get("/",(req,res) => {
-    res.send("hallo Welt");
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 })
 
 //failure redirect

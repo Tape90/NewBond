@@ -1,35 +1,14 @@
 {
-    "version": 2,
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "backend/app.js"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "frontend/index.html"
-      }
-    ],
-    "env": {
-      "PORT": "3001",
-      "CONNECT_STRING": "mongodb+srv://SQZ0111:socialcode@cluster0.hja5xuz.mongodb.net/?retryWrites=true&w=majority",
-      "JWT_SECRET": "socialcodeNewBond",
-      "EMAIL": "newbondsareborn@gmail.com",
-      "EMAIL_PASSWORD": "cfpfbktdpkonahhq"
-    },
-    "builds": [
-      {
-        "src": "frontend/package.json",
-        "use": "@vercel/static-build",
-        "config": {
-          "devCommand": "npm run dev",
-          "buildCommand": "npm run build"
-        }
-      },
-      {
-        "src": "backend/package.json",
-        "use": "@vercel/node"
-      }
-    ]
-  }
+  "version": 2,
+  "builds": [
+    { "src": "frontend/dist/**", "use": "@vercel/static" },
+    { "src": "backend/package.json", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "backend/app.js" }
+  ]
+}
+
+
+
   
