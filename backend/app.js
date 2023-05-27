@@ -16,7 +16,7 @@ const postActionRouter = require('./routes/postAction');
 
 
 //serve static build folder
-app.use(express.static(path.join(__dirname, '../frontend/dist/**')));
+// app.use(express.static(path.join(__dirname, '../frontend/dist/**')));
 
 app.use('/uploads', express.static('uploads'));
 app.use(cors());
@@ -38,7 +38,7 @@ app.use(async function(req,res,next) {
 
 //home route
 app.get("/",(req,res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  res.send("Hello World");
 })
 
 //failure redirect
