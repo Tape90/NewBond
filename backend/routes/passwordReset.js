@@ -66,7 +66,10 @@ router.post("/newPassword", async(req,res) => {
     if(!password || !token){
       res.status(404).send({message: "Unvalid input"});
     }
+    console.log(process.env.JWT_SECRET);
+    console.log(token)
     try {
+      ;
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
       console.log(decodedToken);
       const existUser = User.findOne({email: decodedToken.email});

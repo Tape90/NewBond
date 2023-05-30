@@ -5,7 +5,7 @@ import showNotification from "../notification/showNotification.js";
 import { useNavigate } from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
-const onFormHandle = async(e,formRef,setResetNumber,navigator) => {
+const onFormHandle = async(e,formRef,setResetNumber,navigator,setEmailToken) => {
     e.preventDefault();
     const email = formRef.email.value;
     const config = {
@@ -22,6 +22,7 @@ const onFormHandle = async(e,formRef,setResetNumber,navigator) => {
         const response = await axios(config);
         setResetNumber(response.data.code);
         localStorage.setItem("resetEmail",response.data.token);
+        setEmailToken(response.data.token);
         showNotification("Email sent with code to reset password","normal");
         navigator("/reset/verify");
         console.log(response)
@@ -93,12 +94,13 @@ export default function ResetPage({text,resetNumber,setResetNumber,setResetAllow
     const navigator = useNavigate();
     useEffect(() => {
         setEmailToken(localStorage.getItem("resetEmail"));
+        console.log(emailToken);
     },[])
     {if(text==="Type in your Email to reset passwort") {
         return(
             <Box
             ref={formRef}
-            onSubmit={(e) => onFormHandle(e,formRef.current,setResetNumber,navigator)}
+            onSubmit={(e) => onFormHandle(e,formRef.current,setResetNumber,navigator,setEmailToken)}
             component="form"
             autoComplete="off"
             sx={{
