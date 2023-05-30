@@ -1,3 +1,4 @@
+import { sortBy, filter } from 'lodash';
 import { Box,Button} from "@mui/material"
 import HomeIcon from '@mui/icons-material/Home';
 import ClickableExtendButtons from "../buttons/ClickableExtendButtons";
@@ -10,10 +11,13 @@ import MapIcon from '@mui/icons-material/Map';
 import SubmitButton from "../buttons/SubmitButton";
 import MapModal from "../Modals/MapModal.jsx";
 import PostModal from "../Modals/PostModal.jsx";
+import FilterSelect from "../selects/FilterSelect.jsx";
 import axios from "axios";
 
 
+
 export default function Feed({handleLogout}) {
+    const [filterOption,setFilterOption] = useState("default");
     const [open,setOpen] = useState(false);
     const [showMapModal,setMapModal] = useState(false);
     const onModal = () => {
@@ -26,7 +30,15 @@ export default function Feed({handleLogout}) {
     const closeMapModal = () => {
         setMapModal(false);
     }
-
+    const filterPosts = (posts) => {
+        if(filterOption === "heart"){
+            return sortBy(posts, "heart").reverse();
+        }
+        if(filterOption === "alphabetical"){
+            return sortBy(posts, "title");
+        }
+        return posts;
+    }
     const [expand,setExpand] = useState(true);
     const [posts,setPosts] = useState([]);
     const getPostFromBackend = async () => {
@@ -113,7 +125,7 @@ export default function Feed({handleLogout}) {
                     {
                 
              
-                    posts.map((post) => {
+                    filterPosts(posts).map((post) => {
                         return(
                             <>
                                 <PostCard key={post.id} id={post.id} pictureUrl={post.pictureUrl} 
@@ -137,12 +149,14 @@ export default function Feed({handleLogout}) {
                     <SubmitButton text={"Make new Bond ➕"} postionVal={"sticky"} onHandleClick={onModal}/>
                     {/* add the modal when the button is clicked else nothing*/}
                     <Button onClick={openMapModal}><MapIcon sx={{
+                        position: "fixed",
                         width: "32px",
                         height: "32px",
                         color: "text.primary",
                         borderRadius: "15%"
                     }}
                     /></Button>
+                    <FilterSelect setFilterOption={setFilterOption} filterOption={filterOption}/>
                     
 
                 </Box>
